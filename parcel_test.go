@@ -59,7 +59,7 @@ func TestAddGetDelete(t *testing.T) {
 	require.NoError(t, err)
 	// проверьте, что посылку больше нельзя получить из БД
 	_, err = store.Get(p)
-	require.ErrorIs(t, sql.ErrNoRows, err)
+	require.ErrorIs(t, err, sql.ErrNoRows)
 
 }
 
@@ -165,10 +165,10 @@ func TestGetByClient(t *testing.T) {
 	// check
 	for _, parcel := range storedParcels {
 		// в parcelMap лежат добавленные посылки, ключ - идентификатор посылки, значение - сама посылка
-		_, ok := parcelMap[parcel.Number]
+		val, ok := parcelMap[parcel.Number]
 		// убедитесь, что все посылки из storedParcels есть в parcelMap
 		require.True(t, ok)
 		// убедитесь, что значения полей полученных посылок заполнены верно
-		assert.Equal(t, parcelMap[parcel.Number], parcel)
+		assert.Equal(t, val, parcel)
 	}
 }
